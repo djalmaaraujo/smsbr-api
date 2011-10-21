@@ -6,10 +6,11 @@ Atualmente ela só suporta o envio de múltiplas mensagens, pra ser utilizada nu
 Segue um exemplo de utilização utilizando o Spaghetti PHP como framework. O exemplo é facilmente adaptável a qualquer framework ou outro tipo de implementação:
 
 
-bc. $body = array(
-bc. 	'celular_numero' => '558155555555',
-bc. 	'assinatura' => 'fulano'
-bc. 	'mensagem' => 'Testando SMS'
-bc. );
-bc. 
-bc. Sms::send($body); # Envia
+bc.
+$body = array(
+	'celular_numero' => '558155555555',
+	'assinatura' => 'fulano'
+	'mensagem' => 'Testando SMS'
+);
+ 
+Sms::send($body); # Envia
