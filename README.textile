@@ -8,7 +8,7 @@ Segue um exemplo de utilização utilizando o Spaghetti PHP como framework. O ex
 Se você não quiser configurar direto na classe, você pode em tempo de execução, configurar as opções da api:
 
 bc. Sms::$accountToken = '123456';
-	Sms::$accountUser = 'usuario';
+Sms::$accountUser = 'usuario';
 
 bc. $body = array(
 	'celular_numero' => '558155555555',
