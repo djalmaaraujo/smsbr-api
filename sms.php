@@ -1,4 +1,5 @@
 <?php
+require_once('http.php');
 class Sms extends Object {
 	public static $accountToken = '123456'; # chaveAPI
 	public static $accountUser = 'fulano'; # seu login no smsBR
