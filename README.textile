@@ -12,4 +12,4 @@ bc. $body = array(
 	'mensagem' => 'Testando SMS'
 );
  
-Sms::send($body); # Envia
+bc. Sms::send($body); # Envia
