@@ -3,9 +3,8 @@ h1. SMSBR-API
 Esta classe é para ser utilizada com a API do SMS BR (www.smsbr.com.br).
 Atualmente ela só suporta o envio de múltiplas mensagens, pra ser utilizada num for, foreach, while, etc.
 
-Segue um exemplo de utilização utilizando o Spaghetti PHP como framework. O exemplo é facilmente adaptável a qualquer framework ou outro tipo de implementação:
 
-Se você não quiser configurar direto na classe, você pode em tempo de execução, configurar as opções da api:
+Segue exemplo. Se você não quiser configurar direto na classe, você pode em tempo de execução, configurar as opções da api:
 
 bc. Sms::$accountToken = '123456';
 Sms::$accountUser = 'usuario';
