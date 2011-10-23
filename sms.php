@@ -10,10 +10,11 @@ class Sms {
 	public static $accountUser = 'fulano'; # seu login no smsBR
 	public static $api = 'http://smsbr.com.br/restrito/integracaoGrupoSMS.php'; # API Single Send
 	public static $errors = array();
+	public static $apiType = 'multiple';
 	public static $requiredFields = array(
-		'assinatura',
-		'celular_numero',
-		'mensagem'
+		'signature',
+		'phone',
+		'message'
 	);
 	
 	public static function send($params) {
@@ -34,6 +35,8 @@ class Sms {
 		$params['api'] = self::$accountToken;
 		$params['login'] = self::$accountUser;
 		$params['id_propio'] = rand(00000000, 99999999);
+		$params = self::translateFields($params);
+		
 		return $params;
 	}
 	
@@ -62,6 +65,18 @@ class Sms {
 	}
 	
 	public static function translateFields($params) {
+		$translateParams = array(
+			'api' => 'api', 
+			'login' => 'accountUser', 
+			'id_propio' => 'unique_id', 
+			'assinatura' => 'signature', 
+			'celular_numero' => 'phone', 
+			'mensagem' => 'message',
+			'usuarioNome' => 'user_ame',
+			'numeroTel' => 'phone',
+			'mensTexto' => 'message',
+			'chaveAPI' => 'api'
+		);
 		
 	}
 }
