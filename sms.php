@@ -1,9 +1,14 @@
 <?php
+/**
+ * SMS BR API Class Helper
+ * @djalmaaraujo
+ * BETA
+ */ 
 require_once('http.php');
 class Sms {
 	public static $accountToken = '123456'; # chaveAPI
 	public static $accountUser = 'fulano'; # seu login no smsBR
-	public static $api = 'http://smsbr.com.br/restrito/integracaoGrupoSMS.php'; # API
+	public static $api = 'http://smsbr.com.br/restrito/integracaoGrupoSMS.php'; # API Single Send
 	public static $errors = array();
 	public static $requiredFields = array(
 		'assinatura',
@@ -21,10 +26,15 @@ class Sms {
 	}
 	
 	public static function performSend($params) {
+		$params = self::mergeAccountFields($params);
+		Http::post(self::$api_single, $params);
+	}
+	
+	public static function mergeAccountFields($params) {
 		$params['api'] = self::$accountToken;
 		$params['login'] = self::$accountUser;
-		$params['id_propio'] = rand(00000000,99999999);
-		Http::post(self::$api, $params);
+		$params['id_propio'] = rand(00000000, 99999999);
+		return $params;
 	}
 	
 	public static function result() {
@@ -49,5 +59,9 @@ class Sms {
 		if ($errors) {
 			throw new InvalidArgumentException('Check this empty fields:' . $errors);
 		}
+	}
+	
+	public static function translateFields($params) {
+		
 	}
 }
