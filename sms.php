@@ -6,11 +6,14 @@
  */ 
 require_once('http.php');
 class Sms {
-	public static $accountToken = '123456'; # chaveAPI
+	public static $accountToken = '123456'; # chaveAPI, API
 	public static $accountUser = 'fulano'; # seu login no smsBR
-	public static $api = 'http://smsbr.com.br/restrito/integracaoGrupoSMS.php'; # API Single Send
+	public static $apiType = 'multiple'; # default
 	public static $errors = array();
-	public static $apiType = 'multiple';
+	public static $api = array(
+		'multiple' => 'http://smsbr.com.br/restrito/integracaoGrupoSMS.php',
+		'single' => 'http://smsbr.com.br/enviosms.php'
+	);
 	public static $requiredFields = array(
 		'signature',
 		'phone',
@@ -22,22 +25,38 @@ class Sms {
 			Http::clear();
 			return self::performSend($params);
 		} else {
-			self::outputErrors();
+			return self::$errors;
 		}
 	}
-	
-	public static function performSend($params) {
-		$params = self::mergeAccountFields($params);
-		Http::post(self::$api_single, $params);
-	}
-	
+
 	public static function mergeAccountFields($params) {
-		$params['api'] = self::$accountToken;
-		$params['login'] = self::$accountUser;
-		$params['id_propio'] = rand(00000000, 99999999);
-		$params = self::translateFields($params);
+		$returnParams = array();
 		
-		return $params;
+		switch (self::$apiType) {
+			case 'single':
+				$returnParams['chaveAPI'] = self::$accountToken;
+				$returnParams['usuarioNome'] = self::$accountUser;
+				$returnParams['numeroTel'] = $params['phone'];
+				$returnParams['mensTexto'] = $params['message'];
+				break;
+				
+			case 'multiple':
+				$returnParams['celular_numero'] = $params['phone'];
+				$returnParams['mensagem'] = $params['message'];
+				$returnParams['api'] = self::$accountToken;
+				$returnParams['login'] = self::$accountUser;
+				$returnParams['id_propio'] = rand(00000000, 99999999);
+				$returnParams['partners_id'] = $params['partners_id'];
+				break;
+				
+			default:
+				throw new InvalidArgumentException('Unknown self::$apiType');
+		}
+
+		# Commom
+		$returnParams['assinatura'] = $params['signature'];
+		
+		return $returnParams;
 	}
 	
 	public static function result() {
@@ -57,26 +76,8 @@ class Sms {
 		return (count(self::$errors) > 0) ? false : true;
 	}
 	
-	public function outputErrors() {
-		$errors = implode(',', self::$errors);
-		if ($errors) {
-			throw new InvalidArgumentException('Check this empty fields:' . $errors);
-		}
-	}
-	
-	public static function translateFields($params) {
-		$translateParams = array(
-			'api' => 'api', 
-			'login' => 'accountUser', 
-			'id_propio' => 'unique_id', 
-			'assinatura' => 'signature', 
-			'celular_numero' => 'phone', 
-			'mensagem' => 'message',
-			'usuarioNome' => 'user_ame',
-			'numeroTel' => 'phone',
-			'mensTexto' => 'message',
-			'chaveAPI' => 'api'
-		);
-		
+	public static function performSend($params) {
+		$params = self::mergeAccountFields($params);
+		Http::post(self::$api[self::$apiType], $params);
 	}
 }
