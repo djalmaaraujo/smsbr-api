@@ -50,7 +50,8 @@ class Sms {
 				break;
 				
 			default:
-				throw new InvalidArgumentException('Unknown self::$apiType');
+				self::$errors = 'unknown apiType';
+				return self::$errors;
 		}
 
 		# Commom
