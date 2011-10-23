@@ -1,18 +1,24 @@
-h1. SMSBR-API
+h1. SMS BR API Class Helper
 
 Esta classe é para ser utilizada com a API do SMS BR (www.smsbr.com.br).
-Atualmente ela só suporta o envio de múltiplas mensagens, pra ser utilizada num for, foreach, while, etc.
+Nova versão!
+
+A classe agora suporta os dois tipos de envios. Envio em Massa e Envio único.
 
 
 Segue exemplo. Se você não quiser configurar direto na classe, você pode em tempo de execução, configurar as opções da api:
+Lembrando que você deve configurar se o envio é 'multiple' ou 'single', definindo a variável apiType.
+
+bc. Sms::$apiType = 'single'; # multiple é o padrão
 
 bc. Sms::$accountToken = '123456';
 Sms::$accountUser = 'usuario';
 
 bc. $body = array(
-	'celular_numero' => '558155555555',
-	'assinatura' => 'fulano'
-	'mensagem' => 'Testando SMS'
+	'phone' => '558155555555',
+	'signature' => 'fulano'
+	'message' => 'Testando SMS'
 );
  
 bc. Sms::send($body); # Envia
+
